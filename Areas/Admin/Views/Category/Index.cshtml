@@ -1,0 +1,40 @@
+@model List<Category>
+@{
+    ViewData["Title"] = "Quản Lý Danh Mục";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm Danh Mục</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên Danh Mục</th>
+                    <th>Mô Tả</th>
+                    <th class="text-center">Số Sản Phẩm</th>
+                    <th class="text-end">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in Model)
+                {
+                    <tr>
+                        <td>@cat.Id</td>
+                        <td class="fw-semibold">@cat.Name</td>
+                        <td class="text-muted small">@cat.Description</td>
+                        <td class="text-center">@cat.Products.Count</td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@cat.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@cat.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

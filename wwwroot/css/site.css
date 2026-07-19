@@ -1,0 +1,149 @@
+:root {
+  --bs-primary: #2563eb;
+  --bs-primary-rgb: 37, 99, 235;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.topbar {
+  background-color: #1e293b;
+  color: #e2e8f0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+.text-primary {
+  color: #2563eb !important;
+}
+.bg-primary {
+  background-color: #2563eb !important;
+}
+
+.hero-section {
+  background: linear-gradient(120deg, #1d4ed8 0%, #2563eb 45%, #38bdf8 100%);
+  color: #fff;
+  border-radius: 0 0 2rem 2rem;
+}
+
+.category-pill {
+  transition: all .2s ease-in-out;
+  border: 1px solid #e2e8f0;
+}
+.category-pill:hover, .category-pill.active {
+  background-color: #2563eb;
+  color: #fff !important;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.product-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #eef2f7;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #fff;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 28px -10px rgba(0,0,0,0.15);
+}
+.product-card .product-img {
+  height: 190px;
+  object-fit: contain;
+  background: #f8fafc;
+  padding: .75rem;
+}
+.product-card .badge-new {
+  position: absolute;
+  top: .6rem;
+  left: .6rem;
+}
+.product-card .badge-featured {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+}
+
+.price-tag {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.section-title {
+  position: relative;
+  font-weight: 800;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #2563eb;
+  border-radius: 4px;
+  margin-top: .5rem;
+}
+
+.footer-link:hover {
+  color: #fff !important;
+}
+
+.cart-item-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  background: #f8fafc;
+  border-radius: .5rem;
+}
+
+.admin-sidebar {
+  min-height: 100vh;
+  background: #1e293b;
+}
+.admin-sidebar .nav-link {
+  color: #cbd5e1;
+  border-radius: .5rem;
+  margin-bottom: .25rem;
+}
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+.stat-card {
+  border-radius: 1rem;
+  border: none;
+  color: #fff;
+}
+.stat-card.bg-1 { background: linear-gradient(135deg,#2563eb,#38bdf8); }
+.stat-card.bg-2 { background: linear-gradient(135deg,#0ea5e9,#22d3ee); }
+.stat-card.bg-3 { background: linear-gradient(135deg,#f59e0b,#fbbf24); }
+.stat-card.bg-4 { background: linear-gradient(135deg,#e11d48,#fb7185); }
+
+.table thead th {
+  white-space: nowrap;
+  font-size: .85rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.auth-card {
+  max-width: 460px;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,.15);
+}

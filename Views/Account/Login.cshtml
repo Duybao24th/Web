@@ -1,0 +1,48 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Đăng Nhập";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card auth-card w-100">
+        <div class="card-body p-4 p-md-5">
+            <div class="text-center mb-4">
+                <i class="bi bi-cup-straw text-primary display-5"></i>
+                <h3 class="fw-bold mt-2">Đăng Nhập</h3>
+                <p class="text-muted small">Chào mừng bạn quay lại DrinkStore</p>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control" placeholder="Nhập tài khoản" autofocus />
+                    <span asp-validation-for="Username" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Nhập mật khẩu" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label small"></label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Đăng Nhập</button>
+            </form>
+
+            <div class="text-center mt-4 small text-muted">
+                Chưa có tài khoản? <a asp-controller="Account" asp-action="Register" class="text-primary fw-semibold">Đăng ký ngay</a>
+            </div>
+            <div class="text-center mt-2 small text-muted border-top pt-3">
+                Tài khoản demo quản trị: <code>admin</code> / mật khẩu: <code>admin123</code>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

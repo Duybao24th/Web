@@ -1,0 +1,53 @@
+@model Customer
+@{
+    ViewData["Title"] = "Chi Tiết Khách Hàng";
+    string StatusBadge(string status) => status switch
+    {
+        "Chờ xử lý" => "bg-warning text-dark",
+        "Đang giao hàng" => "bg-info text-dark",
+        "Đã giao hàng" => "bg-success",
+        "Đã hủy" => "bg-danger",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3">Thông Tin Khách Hàng</h6>
+                <p class="mb-1"><strong>Họ tên:</strong> @Model.FullName</p>
+                <p class="mb-1"><strong>Tài khoản:</strong> @Model.Username</p>
+                <p class="mb-1"><strong>Email:</strong> @Model.Email</p>
+                <p class="mb-1"><strong>SĐT:</strong> @Model.Phone</p>
+                <p class="mb-1"><strong>Địa chỉ:</strong> @Model.Address</p>
+                <p class="mb-0"><strong>Ngày đăng ký:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-bold">Lịch Sử Đơn Hàng (@Model.Orders.Count)</div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Mã Đơn</th><th>Ngày Đặt</th><th class="text-end">Tổng Tiền</th><th class="text-center">Trạng Thái</th></tr></thead>
+                    <tbody>
+                        @foreach (var o in Model.Orders.OrderByDescending(o => o.OrderDate))
+                        {
+                            <tr>
+                                <td><a asp-controller="Order" asp-action="Details" asp-route-id="@o.Id">#DS@(o.Id.ToString("D6"))</a></td>
+                                <td>@o.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-end">@o.TotalMoney.ToString("N0") đ</td>
+                                <td class="text-center"><span class="badge @StatusBadge(o.Status)">@o.Status</span></td>
+                            </tr>
+                        }
+                        @if (!Model.Orders.Any())
+                        {
+                            <tr><td colspan="4" class="text-center text-muted py-3">Chưa có đơn hàng</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

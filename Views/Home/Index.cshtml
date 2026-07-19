@@ -1,0 +1,109 @@
+@{
+    ViewData["Title"] = "Trang Chủ";
+    var categories = ViewBag.Categories as List<Category>;
+    var featured = ViewBag.FeaturedProducts as List<Product>;
+    var newest = ViewBag.NewProducts as List<Product>;
+
+    var catIcons = new Dictionary<string, string> {
+        {"Nước ngọt", "bi-cup-straw"}, {"Trà", "bi-cup-hot"}, {"Cà phê", "bi-cup"},
+        {"Nước ép", "bi-droplet"}, {"Nước khoáng", "bi-water"}, {"Sữa", "bi-cup-fill"},
+        {"Nước tăng lực", "bi-lightning-charge"}
+    };
+}
+
+<section class="hero-section py-5">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill">🔥 Ưu đãi mỗi ngày</span>
+                <h1 class="display-5 fw-bold mb-3">Giải Khát Sảng Khoái<br>Giao Hàng Tận Nơi</h1>
+                <p class="fs-5 mb-4 opacity-75">Hơn 20+ sản phẩm nước giải khát chính hãng: nước ngọt, trà, cà phê, nước tăng lực... với giá tốt nhất.</p>
+                <a asp-controller="Product" asp-action="Index" class="btn btn-light btn-lg text-primary fw-semibold px-4">
+                    Mua Sắm Ngay <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block text-center">
+                <i class="bi bi-cup-straw" style="font-size: 14rem; opacity:.25;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <h2 class="section-title mb-4">Danh Mục Sản Phẩm</h2>
+    <div class="row g-3">
+        @if (categories != null)
+        {
+            foreach (var cat in categories)
+            {
+                var icon = catIcons.ContainsKey(cat.Name) ? catIcons[cat.Name] : "bi-cup-straw";
+                <div class="col-6 col-md-3 col-lg-3">
+                    <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@cat.Id"
+                       class="category-pill d-block text-center text-decoration-none text-dark rounded-4 p-4 h-100">
+                        <i class="bi @icon fs-1 text-primary"></i>
+                        <div class="fw-semibold mt-2">@cat.Name</div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+@if (featured != null && featured.Any())
+{
+    <section class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="section-title mb-0">Sản Phẩm Nổi Bật</h2>
+            <a asp-controller="Product" asp-action="Index" class="text-primary fw-semibold">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-4">
+            @foreach (var p in featured)
+            {
+                <partial name="_ProductCard" model="p" />
+            }
+        </div>
+    </section>
+}
+
+@if (newest != null && newest.Any())
+{
+    <section class="container py-4 mb-4">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="section-title mb-0">Hàng Mới Về</h2>
+            <a asp-controller="Product" asp-action="Index" asp-route-sort="newest" class="text-primary fw-semibold">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-4">
+            @foreach (var p in newest)
+            {
+                <partial name="_ProductCard" model="p" />
+            }
+        </div>
+    </section>
+}
+
+<section class="bg-white border-top py-5">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3 col-6">
+                <i class="bi bi-truck fs-1 text-primary"></i>
+                <h6 class="fw-bold mt-2">Giao Hàng Nhanh</h6>
+                <p class="text-muted small">Giao trong 2 giờ nội thành</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <i class="bi bi-patch-check fs-1 text-primary"></i>
+                <h6 class="fw-bold mt-2">Hàng Chính Hãng</h6>
+                <p class="text-muted small">100% sản phẩm có nguồn gốc rõ ràng</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <i class="bi bi-cash-coin fs-1 text-primary"></i>
+                <h6 class="fw-bold mt-2">Giá Tốt Mỗi Ngày</h6>
+                <p class="text-muted small">Cam kết giá cạnh tranh nhất</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <i class="bi bi-headset fs-1 text-primary"></i>
+                <h6 class="fw-bold mt-2">Hỗ Trợ 24/7</h6>
+                <p class="text-muted small">Luôn sẵn sàng hỗ trợ bạn</p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,34 @@
+@model Product
+
+<div class="col-6 col-md-4 col-lg-3">
+    <div class="product-card h-100 position-relative">
+        @if (Model.IsNew)
+        {
+            <span class="badge bg-danger badge-new">Mới</span>
+        }
+        @if (Model.IsFeatured)
+        {
+            <span class="badge bg-warning text-dark badge-featured">Nổi bật</span>
+        }
+        <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id">
+            <img src="@Model.Image" class="product-img w-100" alt="@Model.ProductName"
+                 onerror="this.onerror=null;this.src='https://placehold.co/400x400/f8fafc/94a3b8?text=DrinkStore';">
+        </a>
+        <div class="p-3">
+            <div class="text-muted small mb-1">@Model.Brand · @Model.Volume</div>
+            <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none text-dark">
+                <h6 class="fw-semibold mb-2" style="min-height:2.6em; line-height:1.3;">@Model.ProductName</h6>
+            </a>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="price-tag fs-5">@Model.Price.ToString("N0") đ</span>
+            </div>
+            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="mt-2">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <input type="hidden" name="quantity" value="1" />
+                <button type="submit" class="btn btn-primary btn-sm w-100" @(Model.Quantity <= 0 ? "disabled" : "")>
+                    <i class="bi bi-cart-plus"></i> @(Model.Quantity <= 0 ? "Hết Hàng" : "Thêm Vào Giỏ")
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

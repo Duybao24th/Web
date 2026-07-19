@@ -1,0 +1,80 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Quản Lý Sản Phẩm";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <form method="get" class="d-flex gap-2">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control form-control-sm" placeholder="Tìm tên/thương hiệu..." style="width:220px">
+        <select name="categoryId" class="form-select form-select-sm" style="width:180px" asp-items="ViewBag.Categories">
+            <option value="">-- Tất cả danh mục --</option>
+        </select>
+        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-search"></i></button>
+    </form>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm Sản Phẩm</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Danh Mục</th>
+                    <th class="text-end">Giá</th>
+                    <th class="text-center">Tồn Kho</th>
+                    <th class="text-center">Trạng Thái</th>
+                    <th class="text-end">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td><img src="@p.Image" style="width:44px;height:44px;object-fit:contain;background:#f8fafc;border-radius:.4rem" onerror="this.style.display='none'"></td>
+                        <td>
+                            <div class="fw-semibold small">@p.ProductName</div>
+                            <div class="text-muted small">@p.Brand · @p.Volume</div>
+                        </td>
+                        <td class="small">@p.Category?.Name</td>
+                        <td class="text-end">@p.Price.ToString("N0") đ</td>
+                        <td class="text-center">@p.Quantity</td>
+                        <td class="text-center">
+                            @if (p.Status)
+                            {
+                                <span class="badge bg-success-subtle text-success">Đang bán</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary-subtle text-secondary">Ngừng bán</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="7" class="text-center text-muted py-4">Không tìm thấy sản phẩm nào</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if ((int)ViewBag.TotalPages > 1)
+{
+    <nav class="mt-3">
+        <ul class="pagination">
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.CategoryId">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

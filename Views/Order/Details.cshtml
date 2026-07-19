@@ -1,0 +1,73 @@
+@model Order
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng";
+
+    string StatusBadge(string status) => status switch
+    {
+        "Chờ xử lý" => "bg-warning text-dark",
+        "Đang giao hàng" => "bg-info text-dark",
+        "Đã giao hàng" => "bg-success",
+        "Đã hủy" => "bg-danger",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="MyOrders">Đơn hàng của tôi</a></li>
+            <li class="breadcrumb-item active">#DS@(Model.Id.ToString("D6"))</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">Đơn Hàng #DS@(Model.Id.ToString("D6"))</h2>
+        <span class="badge @StatusBadge(Model.Status) fs-6">@Model.Status</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Sản Phẩm Đã Đặt</h6>
+                    <table class="table align-middle">
+                        <tbody>
+                        @foreach (var od in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>@od.Product?.ProductName</td>
+                                <td class="text-center">x@od.Quantity</td>
+                                <td class="text-end">@od.UnitPrice.ToString("N0") đ</td>
+                                <td class="text-end fw-semibold">@((od.Quantity * od.UnitPrice).ToString("N0")) đ</td>
+                            </tr>
+                        }
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-top">
+                                <td colspan="3" class="fw-bold">Tổng Cộng</td>
+                                <td class="text-end fw-bold price-tag">@Model.TotalMoney.ToString("N0") đ</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Thông Tin Giao Hàng</h6>
+                    <p class="mb-1"><strong>Người nhận:</strong> @Model.ReceiverName</p>
+                    <p class="mb-1"><strong>SĐT:</strong> @Model.ReceiverPhone</p>
+                    <p class="mb-1"><strong>Địa chỉ:</strong> @Model.ShippingAddress</p>
+                    <p class="mb-1"><strong>Thanh toán:</strong> @Model.PaymentMethod</p>
+                    <p class="mb-0"><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    @if (!string.IsNullOrEmpty(Model.Note))
+                    {
+                        <p class="mb-0 mt-2"><strong>Ghi chú:</strong> @Model.Note</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

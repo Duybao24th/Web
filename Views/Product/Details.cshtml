@@ -1,0 +1,74 @@
+@model Product
+@{
+    ViewData["Title"] = Model.ProductName;
+    var related = ViewBag.RelatedProducts as List<Product>;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index" asp-route-categoryId="@Model.CategoryId">@Model.Category?.Name</a></li>
+            <li class="breadcrumb-item active">@Model.ProductName</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-3 text-center">
+                <img src="@Model.Image" class="img-fluid" style="max-height:380px;object-fit:contain;" alt="@Model.ProductName"
+                     onerror="this.onerror=null;this.src='https://placehold.co/500x500/f8fafc/94a3b8?text=DrinkStore';">
+            </div>
+        </div>
+        <div class="col-md-7">
+            <span class="badge bg-primary-subtle text-primary mb-2">@Model.Category?.Name</span>
+            @if (Model.IsNew) { <span class="badge bg-danger mb-2">Mới</span> }
+            @if (Model.IsFeatured) { <span class="badge bg-warning text-dark mb-2">Nổi bật</span> }
+
+            <h2 class="fw-bold">@Model.ProductName</h2>
+            <p class="text-muted mb-1"><i class="bi bi-tag"></i> Thương hiệu: <strong>@Model.Brand</strong> &nbsp; | &nbsp; Dung tích: <strong>@Model.Volume</strong></p>
+
+            <h3 class="price-tag my-3">@Model.Price.ToString("N0") đ</h3>
+
+            <p class="text-muted">
+                @if (Model.Quantity > 0)
+                {
+                    <span class="text-success"><i class="bi bi-check-circle"></i> Còn hàng (@Model.Quantity sản phẩm)</span>
+                }
+                else
+                {
+                    <span class="text-danger"><i class="bi bi-x-circle"></i> Tạm hết hàng</span>
+                }
+            </p>
+
+            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex align-items-center gap-3 my-4">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <div class="input-group" style="width:150px">
+                    <button class="btn btn-outline-secondary" type="button" data-qty-step="-1" data-target="qtyInput"><i class="bi bi-dash"></i></button>
+                    <input type="number" id="qtyInput" name="quantity" value="1" min="1" max="@Model.Quantity" class="form-control text-center">
+                    <button class="btn btn-outline-secondary" type="button" data-qty-step="1" data-target="qtyInput"><i class="bi bi-plus"></i></button>
+                </div>
+                <button type="submit" class="btn btn-primary px-4" @(Model.Quantity <= 0 ? "disabled" : "")>
+                    <i class="bi bi-cart-plus"></i> Thêm Vào Giỏ Hàng
+                </button>
+            </form>
+
+            <hr>
+            <h6 class="fw-bold">Mô Tả Sản Phẩm</h6>
+            <p class="text-muted">@Model.Description</p>
+        </div>
+    </div>
+
+    @if (related != null && related.Any())
+    {
+        <hr class="my-5">
+        <h4 class="section-title mb-4">Sản Phẩm Liên Quan</h4>
+        <div class="row g-4">
+            @foreach (var p in related)
+            {
+                <partial name="_ProductCard" model="p" />
+            }
+        </div>
+    }
+</div>
